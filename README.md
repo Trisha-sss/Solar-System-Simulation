@@ -1,28 +1,39 @@
 # Solar System Simulation
 
-A Python-based simulation of planetary motion using gravitational forces and Pygame.
+A Python-based simulation of planetary motion using gravitational forces and numerical computation.
 
 ## Features
 
 - Simulates the Sun, Mercury, Venus, Earth, and Mars
-- Calculates gravitational interactions between celestial bodies
+- Demonstrates gravitational interactions between celestial bodies
 - Visualizes planetary orbits and orbital trails
-- Displays the distance of planets from the Sun
+- Uses numerical methods to simulate planetary motion
 
 ## Technologies
 
-- Python
-- Pygame
-- Math
+Python, Pygame, NumPy, Matplotlib, Math
 
-## How It Works
+## Implementations
 
-The simulation uses Newton's Law of Gravitation to calculate forces between planets. 
-These forces are used to update their velocities and positions at each time step.
+- `solar.py` – Interactive Solar System visualization using Pygame
+- `solar_system.py` – N-body simulation using NumPy, Matplotlib, and Velocity-Verlet integration
 
 ## How to Run
 
-Install Pygame:
+For `solar.py`:
 
-```bash
-pip install pygame
+    pip install pygame
+    python solar.py
+
+For `solar_system.py`:
+
+    pip install numpy matplotlib
+    python solar_system.py
+
+## Limitations
+
+This is a simplified simulation and does not account for planetary tilts, moons, detailed orbital eccentricities, or relativistic effects.
+
+## Project Status
+
+Academic / Educational Project
