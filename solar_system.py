@@ -1,5 +1,3 @@
-Python 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)] on win32
-Enter "help" below or click "Help" above for more information.
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import animation
@@ -94,49 +92,50 @@ ax.set_facecolor("k")
 ax.set_aspect('equal', 'box')
 
 # Determine plot limits based on outermost planet (Neptune)
-... max_dist = np.max(np.linalg.norm(positions_history, axis=2))
-... lim = max(10.0, max_dist * 1.1)  # show a good region
-... ax.set_xlim(-lim, lim)
-... ax.set_ylim(-lim, lim)
-... ax.set_xlabel("x (AU)")
-... ax.set_ylabel("y (AU)")
-... ax.set_title("Simplified N-body Solar System (AU, years)")
-... 
-... # Marker sizes (scale up for visibility) and colors
-... sizes = np.array([20, 3, 4, 4, 3, 10, 9, 6, 6]) * 10  # tweak for visibility
-... colors = ['yellow', 'gray', 'orange', 'blue', 'red', 'brown', 'gold', 'cyan', 'navy']
-... 
-... scat = ax.scatter([], [], s=sizes, color=colors)
-... # text labels
-... labels = [ax.text(0,0,"", color='white', fontsize=8) for _ in range(N)]
-... 
-... # trails: lines for each body
-... trail_len = 200  # points
-... lines = [ax.plot([], [], linewidth=1, alpha=0.6, color=colors[i])[0] for i in range(N)]
-... 
-... def init():
-...     scat.set_offsets([])
-...     for lbl in labels:
-...         lbl.set_text("")
-...     for line in lines:
-...         line.set_data([], [])
-...     return [scat, *labels, *lines]
-... 
-... def animate(frame):
-...     data = positions_history[frame]
-...     scat.set_offsets(data)
-...     # update labels and trails
-...     for i in range(N):
-...         x, y = data[i]
-...         labels[i].set_position((x, y))
-...         labels[i].set_text(names[i])
-...         # compute trail points
-...         start = max(0, frame - trail_len)
-...         trail = positions_history[start:frame+1, i]
-...         lines[i].set_data(trail[:,0], trail[:,1])
-...     return [scat, *labels, *lines]
-... 
-... anim = animation.FuncAnimation(fig, animate, frames=frames, init_func=init,
-...                                interval=30, blit=True)
-... 
-... plt.show()
+max_dist = np.max(np.linalg.norm(positions_history, axis=2))
+lim = max(10.0, max_dist * 1.1)  # show a good region
+ax.set_xlim(-lim, lim)
+ax.set_ylim(-lim, lim)
+ax.set_xlabel("x (AU)")
+ax.set_ylabel("y (AU)")
+ax.set_title("Simplified N-body Solar System (AU, years)")
+ 
+# Marker sizes (scale up for visibility) and colors
+sizes = np.array([20, 3, 4, 4, 3, 10, 9, 6, 6]) * 10  # tweak for visibility
+colors = ['yellow', 'gray', 'orange', 'blue', 'red', 'brown', 'gold', 'cyan', 'navy']
+ 
+scat = ax.scatter(np.zeros(N), np.zeros(N), s=sizes, color=colors)
+
+# text labels
+labels = [ax.text(0,0,"", color='white', fontsize=8) for _ in range(N)]
+ 
+ # trails: lines for each body
+trail_len = 200  # points
+lines = [ax.plot([], [], linewidth=1, alpha=0.6, color=colors[i])[0] for i in range(N)]
+
+def init():
+    scat.set_offsets(np.zeros((N, 2)))
+    for lbl in labels:
+        lbl.set_text("")
+    for line in lines:
+        line.set_data([], [])
+    return [scat, *labels, *lines]
+
+def animate(frame):
+    data = positions_history[frame]
+    scat.set_offsets(data)
+    # update labels and trails
+    for i in range(N):
+        x, y = data[i]
+        labels[i].set_position((x, y))
+        labels[i].set_text(names[i])
+        # compute trail points
+        start = max(0, frame - trail_len)
+        trail = positions_history[start:frame+1, i]
+        lines[i].set_data(trail[:,0], trail[:,1])
+    return [scat, *labels, *lines]
+
+anim = animation.FuncAnimation(fig, animate, frames=frames, init_func=init,
+                               interval=30, blit=True)
+
+plt.show()
